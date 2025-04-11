@@ -1,0 +1,8 @@
+name: Quake
+version: '1.0-BETA'
+main: me.dovide.quake.QuakeMain
+api-version: '1.21'
+authors: [ Dovide ]
+description: Quake Plugin - Test For CoralMC
+commands:
+  gun:
