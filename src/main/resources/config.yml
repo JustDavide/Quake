@@ -1,0 +1,3 @@
+misc:
+  range: 45
+  cooldown: 2000 # CoolDown in millisecondi (1s = 1000ms)
