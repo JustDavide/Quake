@@ -22,10 +22,6 @@ public final class QuakeMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
 
     public Config createConfig(String name) {
         File fc = new File(getDataFolder(), name);
@@ -45,5 +41,9 @@ public final class QuakeMain extends JavaPlugin {
 
     public Config getConfig(){
         return config;
+    }
+
+    public void reloadConfig(){
+        this.config = createConfig("config.yml");
     }
 }

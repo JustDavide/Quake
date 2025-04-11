@@ -1,3 +1,10 @@
 misc:
   range: 45
   cooldown: 2000 # CoolDown in millisecondi (1s = 1000ms)
+
+db:
+  url: localhost
+  user: root
+  password: ""
+  port: 3306
+  database: quake
