@@ -5,4 +5,4 @@ api-version: '1.21'
 authors: [ Dovide ]
 description: Quake Plugin - Test For CoralMC
 commands:
-  gun:
+  quake:

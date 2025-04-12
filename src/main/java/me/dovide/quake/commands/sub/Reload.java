@@ -2,14 +2,17 @@ package me.dovide.quake.commands.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
+import me.dovide.quake.utils.Config;
 import org.bukkit.entity.Player;
 
 public class Reload extends SubCommand {
 
     private final QuakeMain instance;
+    private final Config config;
 
     public Reload(QuakeMain instance){
         this.instance = instance;
+        this.config = instance.getConfig();
     }
 
     @Override
@@ -25,7 +28,10 @@ public class Reload extends SubCommand {
             return;
         }
 
-        // Da implementare i permessi da config
+        if(player.hasPermission(config.getString("perms.reload"))){
+            player.sendMessage("No Perms");
+            return;
+        }
 
         instance.reloadConfig();
         player.sendMessage("Config ricaricato.");

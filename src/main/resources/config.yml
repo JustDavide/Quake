@@ -1,6 +1,6 @@
 misc:
   range: 45
-  cooldown: 2000 # CoolDown in millisecondi (1s = 1000ms)
+  cooldown: 2000 # Cooldown in millisecondi (1s = 1000ms)
 
 db:
   url: localhost
@@ -8,3 +8,8 @@ db:
   password: ""
   port: 3306
   database: quake
+
+perms:
+  command: quake.command
+  get: quake.get
+  reload: quake.reload

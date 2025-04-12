@@ -2,6 +2,8 @@ package me.dovide.quake.commands;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.sub.Get;
+import me.dovide.quake.commands.sub.Reload;
+import me.dovide.quake.utils.Config;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,12 +14,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Gun implements TabExecutor {
+public class Quake implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
+    private final Config config;
 
-    public Gun(QuakeMain instance){
-        registerSubCommand(new Get());
+    public Quake(QuakeMain instance){
+        registerSubCommand(new Get(instance));
+        registerSubCommand(new Reload(instance));
+
+        this.config = instance.getConfig();
     }
 
     private void registerSubCommand(SubCommand sub){
@@ -35,6 +41,11 @@ public class Gun implements TabExecutor {
 
         if(args.length == 0){
             player.sendMessage("Args wrong");
+            return true;
+        }
+
+        if(player.hasPermission(config.getString("perms.command"))){
+            player.sendMessage("No Perms");
             return true;
         }
 
