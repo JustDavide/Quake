@@ -1,11 +1,10 @@
 package me.dovide.quake.db;
 
 import me.dovide.quake.QuakeMain;
-import me.dovide.quake.obj.PlayerStats;
+import me.dovide.quake.db.obj.PlayerStats;
 import me.dovide.quake.utils.Config;
 import org.bukkit.Bukkit;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.UUID;
 

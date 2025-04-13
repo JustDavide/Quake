@@ -2,6 +2,7 @@ package me.dovide.quake;
 
 import me.dovide.quake.commands.Quake;
 import me.dovide.quake.db.Database;
+import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.listeners.GunClick;
 import me.dovide.quake.utils.Config;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,14 +15,16 @@ import java.sql.SQLException;
 public final class QuakeMain extends JavaPlugin {
 
     private Config config;
-    private Database database;
+    private Config arenas;
+    private ArenaManager arenaManager;
 
     @Override
     public void onEnable() {
 
         this.config = createConfig("config.yml");
+        this.arenas = createConfig("arenas.yml");
 
-        database = new Database(this);
+        Database database = new Database(this);
 
         try{
             database.getConnection();
@@ -35,8 +38,11 @@ public final class QuakeMain extends JavaPlugin {
             database.initDatabase();
         }catch(SQLException err){
             getServer().getLogger().severe("Impossibile Creare / Caricare le tabelle");
+            getServer().getPluginManager().disablePlugin(this);
             err.printStackTrace();
         }
+
+        arenaManager.initArenas();
 
         getCommand("quake").setExecutor(new Quake(this));
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
@@ -64,7 +70,23 @@ public final class QuakeMain extends JavaPlugin {
         return config;
     }
 
+    public Config getArenas(){
+        return arenas;
+    }
+
+    public void saveArenas(){
+        try{
+            arenas.save(new File(getDataFolder(), "arenas.yml"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public void reloadConfig(){
         this.config = createConfig("config.yml");
+    }
+
+    public ArenaManager getArenaManager(){
+        return arenaManager;
     }
 }

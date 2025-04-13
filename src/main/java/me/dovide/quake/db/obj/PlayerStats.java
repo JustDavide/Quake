@@ -1,4 +1,4 @@
-package me.dovide.quake.obj;
+package me.dovide.quake.db.obj;
 
 import java.util.UUID;
 
