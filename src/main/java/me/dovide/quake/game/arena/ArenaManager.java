@@ -1,6 +1,7 @@
 package me.dovide.quake.game.arena;
 
 import me.dovide.quake.QuakeMain;
+import me.dovide.quake.game.GameState;
 import me.dovide.quake.utils.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -90,6 +91,10 @@ public class ArenaManager {
         for(String id : section.getKeys(false)){
             activeArenas.put(getArena(id), GameState.WAITING);
         }
+    }
+
+    public Map<Arena, GameState> getActiveArenas(){
+        return activeArenas;
     }
 
 }

@@ -10,6 +10,5 @@ db:
   database: quake
 
 perms:
-  command: quake.command
   get: quake.get
   reload: quake.reload

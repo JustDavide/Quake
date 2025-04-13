@@ -13,7 +13,6 @@ public class Items {
 
         meta.setItemName("Quake Gun");
 
-
         i.setItemMeta(meta);
 
         return i;

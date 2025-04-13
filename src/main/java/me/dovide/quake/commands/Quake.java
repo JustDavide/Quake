@@ -17,13 +17,10 @@ import java.util.List;
 public class Quake implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
-    private final Config config;
 
     public Quake(QuakeMain instance){
         registerSubCommand(new Get(instance));
         registerSubCommand(new Reload(instance));
-
-        this.config = instance.getConfig();
     }
 
     private void registerSubCommand(SubCommand sub){
@@ -44,10 +41,6 @@ public class Quake implements TabExecutor {
             return true;
         }
 
-        if(player.hasPermission(config.getString("perms.command"))){
-            player.sendMessage("No Perms");
-            return true;
-        }
 
         String subName = args[0].toLowerCase();
         SubCommand sub = subCommands.get(subName);
@@ -64,7 +57,7 @@ public class Quake implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return new ArrayList<>(subCommands.keySet()); // Suggest all subcommands
+            return new ArrayList<>(subCommands.keySet()); // Suggerisce tutti i subcommands
         }
         return Collections.emptyList();
     }

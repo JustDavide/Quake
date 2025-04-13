@@ -1,4 +1,4 @@
-package me.dovide.quake.game.arena;
+package me.dovide.quake.game;
 
 public enum GameState {
 
