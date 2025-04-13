@@ -2,6 +2,7 @@ package me.dovide.quake.game;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.game.arena.Arena;
+import me.dovide.quake.utils.Items;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -20,12 +21,14 @@ public class GameInstance {
     private final Map<Player, PlayerInventory> prevInv = new HashMap<>();
     private GameState state = GameState.WAITING;
     private final QuakeMain instance;
+    private final Items items;
 
     private BukkitRunnable countdown;
 
     public GameInstance(Arena arena, QuakeMain instance){
         this.arena = arena;
         this.instance = instance;
+        this.items = new Items();
     }
 
     public void playerJoin(Player player){
@@ -35,7 +38,7 @@ public class GameInstance {
         player.getInventory().clear();
         player.teleport(arena.getLobby());
 
-        // Check per lo start del game
+        checkStart();
     }
 
     public void playerLeave(Player player){
@@ -48,7 +51,7 @@ public class GameInstance {
         prevInv.remove(player);
 
         if(players.size() < arena.getMinPlayers() && state == GameState.STARTING){
-            // Cancella countdown
+            cancelCountdown();
             state = GameState.WAITING;
         }
     }
@@ -56,11 +59,11 @@ public class GameInstance {
     private void checkStart(){
         if (players.size() > arena.getMinPlayers() && state == GameState.WAITING){
             state = GameState.STARTING;
-            // Inizia Countdown
+            startCountdown();
         }
     }
 
-    private void countdown(){
+    private void startCountdown(){
         countdown = new BukkitRunnable() {
 
             int timer = 10;
@@ -74,7 +77,7 @@ public class GameInstance {
                 }
 
                 if(timer <= 0){
-                    // Inizio Game
+                    startGame();
                     cancel();
                     return;
                 }
@@ -103,6 +106,7 @@ public class GameInstance {
 
         for(GamePlayer gp : players.values()){
             gp.getPlayer().teleport(spawns.get(i++ % spawns.size())); // Fa in modo che ogni spawn viene utilizzato
+            gp.getPlayer().getInventory().addItem(items.getGun());
         }
     }
 

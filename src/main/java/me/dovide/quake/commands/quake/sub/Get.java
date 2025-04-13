@@ -1,4 +1,4 @@
-package me.dovide.quake.commands.sub;
+package me.dovide.quake.commands.quake.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
@@ -30,7 +30,7 @@ public class Get extends SubCommand {
             return;
         }
 
-        if(player.hasPermission(config.getString("perms.get"))){
+        if(player.hasPermission(config.getString("perms.quake.get"))){
             player.sendMessage("No Perms");
             return;
         }

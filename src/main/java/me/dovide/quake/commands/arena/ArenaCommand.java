@@ -1,9 +1,11 @@
-package me.dovide.quake.commands;
+package me.dovide.quake.commands.arena;
 
 import me.dovide.quake.QuakeMain;
-import me.dovide.quake.commands.sub.Get;
-import me.dovide.quake.commands.sub.Reload;
-import me.dovide.quake.utils.Config;
+import me.dovide.quake.commands.SubCommand;
+import me.dovide.quake.commands.quake.sub.Get;
+import me.dovide.quake.commands.quake.sub.Join;
+import me.dovide.quake.commands.quake.sub.Leave;
+import me.dovide.quake.commands.quake.sub.Reload;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -14,13 +16,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Quake implements TabExecutor {
+public class ArenaCommand implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
 
-    public Quake(QuakeMain instance){
-        registerSubCommand(new Get(instance));
-        registerSubCommand(new Reload(instance));
+    public ArenaCommand(QuakeMain instance){
     }
 
     private void registerSubCommand(SubCommand sub){
@@ -61,4 +61,5 @@ public class Quake implements TabExecutor {
         }
         return Collections.emptyList();
     }
+
 }

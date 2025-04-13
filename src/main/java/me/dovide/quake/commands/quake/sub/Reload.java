@@ -1,4 +1,4 @@
-package me.dovide.quake.commands.sub;
+package me.dovide.quake.commands.quake.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
@@ -28,7 +28,7 @@ public class Reload extends SubCommand {
             return;
         }
 
-        if(player.hasPermission(config.getString("perms.reload"))){
+        if(player.hasPermission(config.getString("perms.quake.reload"))){
             player.sendMessage("No Perms");
             return;
         }

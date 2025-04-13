@@ -1,7 +1,8 @@
 package me.dovide.quake;
 
-import me.dovide.quake.commands.Quake;
+import me.dovide.quake.commands.quake.QuakeCommand;
 import me.dovide.quake.db.Database;
+import me.dovide.quake.game.GameManager;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.listeners.GunClick;
 import me.dovide.quake.utils.Config;
@@ -17,6 +18,7 @@ public final class QuakeMain extends JavaPlugin {
     private Config config;
     private Config arenas;
     private ArenaManager arenaManager;
+    private GameManager gameManager;
 
     @Override
     public void onEnable() {
@@ -43,8 +45,9 @@ public final class QuakeMain extends JavaPlugin {
         }
 
         arenaManager.initArenas();
+        this.gameManager = new GameManager(this, arenaManager);
 
-        getCommand("quake").setExecutor(new Quake(this));
+        getCommand("quake").setExecutor(new QuakeCommand(this));
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
     }
 
@@ -88,5 +91,9 @@ public final class QuakeMain extends JavaPlugin {
 
     public ArenaManager getArenaManager(){
         return arenaManager;
+    }
+
+    public GameManager getGameManager(){
+        return gameManager;
     }
 }

@@ -2,6 +2,10 @@ package me.dovide.quake.listeners;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.db.Database;
+import me.dovide.quake.game.GameInstance;
+import me.dovide.quake.game.GameManager;
+import me.dovide.quake.game.GamePlayer;
+import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.Items;
@@ -16,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class GunClick implements Listener {
 
@@ -23,16 +28,21 @@ public class GunClick implements Listener {
     private final Config config;
     private final CDManager cdManager;
     private final Database database;
+    private final GameManager gameManager;
 
     public GunClick(QuakeMain instance){
         this.config = instance.getConfig();
         this.items = new Items();
         this.cdManager = new CDManager();
         this.database = new Database(instance);
+        this.gameManager = instance.getGameManager();
     }
 
     @EventHandler
     public void GunShoot(PlayerInteractEvent e){
+
+        if(!gameManager.isPlayerInGame(e.getPlayer())) // Check per evitare che persone al di fuori del game possano sparare
+            return;
 
         HashMap<Player, Long> cooldown = cdManager.getCooldown();
         int cooldownTime = config.getInt("misc.cooldown");
@@ -79,7 +89,8 @@ public class GunClick implements Listener {
                 break;
 
             if(loc.getBlock().getType() == Material.GLASS) { // Aggiunta per distruggere il vetro se si spara [QOL]
-                // world.spawnParticle(Particle.BLOCK, loc, ); Da Spawnare una particella di vetro (e suono)
+                world.spawnParticle(Particle.BLOCK, loc, 30, 0.3, 0.3, 0.3, Material.GLASS.createBlockData());
+                world.playSound(loc, Sound.BLOCK_GLASS_BREAK, 1.0f, 1.0f);
                 loc.getBlock().breakNaturally();
             }
 
@@ -90,7 +101,12 @@ public class GunClick implements Listener {
             for(Entity entity : world.getNearbyEntities(loc, 0.5, 0.5, 0.5)){
                 if(entity instanceof Player && !entity.equals(player)){
                     // Respawn Mechanic
-                    player.sendMessage("You hit " + entity.getName());
+                    Arena arena = gameManager.getPlayersInGame().get(entity);
+                    entity.teleport(arena.getSpawns().get(new Random().nextInt(arena.getSpawns().size()))); // Potrebbe essere fatto meglio TODO
+
+                    player.sendMessage("Hai colpito: " + entity.getName());
+                    entity.sendMessage("Sei stato colpito da: " + player.getName());
+                    assignPoint(player);
                     return;
                 }
             }
@@ -98,12 +114,12 @@ public class GunClick implements Listener {
         }
     }
 
-    public void playerHit(Player player, Player target){
+    private void assignPoint(Player player){
+        String gameID = gameManager.getPlayersInGame().get(player).getID();
+        GameInstance gameInstance = gameManager.getGame(gameID);
 
-        // Dovrò sostituirlo con un CacheManager per ogni partita
-
-
-
+        GamePlayer gamePlayer = gameInstance.getPlayers().get(player.getUniqueId());
+        gamePlayer.addScore();
     }
 
 }

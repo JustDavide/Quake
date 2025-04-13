@@ -10,11 +10,12 @@ import java.util.Map;
 
 public class GameManager {
 
-    private final QuakeMain instance;
+    private final Map<Player, Arena> playersInGame = new HashMap<>();
     private final Map<String, GameInstance> games = new HashMap<>();
+    private final ArenaManager arenaManager;
 
     public GameManager(QuakeMain instance, ArenaManager arenaManager){
-        this.instance = instance;
+        this.arenaManager = arenaManager;
         for (Arena arena : arenaManager.getActiveArenas().keySet()){
             games.put(arena.getID(), new GameInstance(arena, instance));
         }
@@ -24,24 +25,36 @@ public class GameManager {
         return games.get(id);
     }
 
+    public boolean isPlayerInGame(Player player){
+        return playersInGame.containsKey(player);
+    }
+
     public void joinArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
         if (game == null) {
-            player.sendMessage("This arena doesn't exist.");
+            player.sendMessage("Arena non esiste");
             return;
         }
+
         if (game.getPlayers().size() >= game.getArena().getMaxPlayers()) {
-            player.sendMessage("Arena is full.");
+            player.sendMessage("Arena piena");
             return;
         }
         game.playerJoin(player);
+        playersInGame.put(player, arenaManager.getArena(arenaId));
+        player.sendMessage("Sei entrato nell'arena");
     }
 
     public void leaveArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
+        playersInGame.remove(player);
         if (game != null) {
             game.playerLeave(player);
         }
+    }
+
+    public Map<Player, Arena> getPlayersInGame(){
+        return playersInGame;
     }
 
 }

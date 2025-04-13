@@ -10,5 +10,8 @@ db:
   database: quake
 
 perms:
-  get: quake.get
-  reload: quake.reload
+  quake:
+    get: quake.get
+    reload: quake.reload
+  arena:
+    command: arena.command
