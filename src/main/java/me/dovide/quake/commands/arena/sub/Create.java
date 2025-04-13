@@ -12,7 +12,7 @@ public class Create extends SubCommand {
     @Override
     public void execute(Player player, String[] args) {
 
-        // Arena creator
+        // Arena creator TODO
 
     }
 }
