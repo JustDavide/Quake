@@ -2,20 +2,21 @@ package me.dovide.quake.commands.arena.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
-import me.dovide.quake.commands.arena.ArenaCommand;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class Create extends SubCommand {
+import java.util.ArrayList;
+import java.util.List;
 
-    private final QuakeMain instance;
+public class AddSpawn extends SubCommand {
+
     private final Config config;
     private final CreatorManager creatorManager;
 
-    public Create(QuakeMain instance){
-        this.instance = instance;
+    public AddSpawn(QuakeMain instance){
         this.config = instance.getConfig();
         this.creatorManager = instance.getCreatorManager();
     }
@@ -23,32 +24,38 @@ public class Create extends SubCommand {
 
     @Override
     public String getName() {
-        return "create";
+        return "addSpawn";
     }
 
     @Override
     public void execute(Player player, String[] args) {
 
-        if (args.length != 2){
-            player.sendMessage("Wrong Args");
+        if(args.length != 1){
+            player.sendMessage("Wrong args");
             return;
         }
 
         if(!player.hasPermission(config.getString("perms.arena.setup"))){
-            player.sendMessage("No Perms");
+            player.sendMessage("No perms");
             return;
         }
 
-        if(creatorManager.getActiveCreators().containsKey(player)){
-            player.sendMessage("Already creating");
+        if(!creatorManager.getActiveCreators().containsKey(player)){
+            player.sendMessage("not creating");
             return;
         }
 
-        String arenaID = args[1];
-        Arena arena = new Arena();
-        arena.setID(arenaID);
+        Arena arena = creatorManager.getActiveCreators().get(player);
 
-        creatorManager.getActiveCreators().put(player, arena);
-        player.sendMessage("Arena created. Use /arena <sub-command> to edit it");
+        List<Location> locations;
+
+        if(arena.getSpawns().isEmpty())
+            locations = new ArrayList<>();
+        else
+            locations = arena.getSpawns();
+
+        locations.add(player.getLocation());
+        arena.setSpawns(locations);
+
     }
 }

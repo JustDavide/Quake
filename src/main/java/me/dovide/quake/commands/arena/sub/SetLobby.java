@@ -2,53 +2,50 @@ package me.dovide.quake.commands.arena.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
-import me.dovide.quake.commands.arena.ArenaCommand;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class Create extends SubCommand {
+public class SetLobby extends SubCommand {
 
-    private final QuakeMain instance;
     private final Config config;
     private final CreatorManager creatorManager;
 
-    public Create(QuakeMain instance){
-        this.instance = instance;
+    public SetLobby(QuakeMain instance){
         this.config = instance.getConfig();
         this.creatorManager = instance.getCreatorManager();
     }
 
-
     @Override
     public String getName() {
-        return "create";
+        return "setLobby";
     }
 
     @Override
     public void execute(Player player, String[] args) {
 
-        if (args.length != 2){
-            player.sendMessage("Wrong Args");
+        if(args.length != 1){
+            player.sendMessage("Wrong args");
             return;
         }
 
         if(!player.hasPermission(config.getString("perms.arena.setup"))){
-            player.sendMessage("No Perms");
+            player.sendMessage("no perms");
             return;
         }
 
-        if(creatorManager.getActiveCreators().containsKey(player)){
-            player.sendMessage("Already creating");
+        if(!creatorManager.getActiveCreators().containsKey(player)){
+            player.sendMessage("Not Creating");
             return;
         }
 
-        String arenaID = args[1];
-        Arena arena = new Arena();
-        arena.setID(arenaID);
+        Location loc = player.getLocation();
+        Arena arena = creatorManager.getActiveCreators().get(player);
 
-        creatorManager.getActiveCreators().put(player, arena);
-        player.sendMessage("Arena created. Use /arena <sub-command> to edit it");
+        arena.setLobby(loc);
+        player.sendMessage("Lobby set. When finished use /arena finish");
+
     }
 }

@@ -13,7 +13,7 @@ public class CreatorManager {
 
     private final HashMap<Player, Arena> activeCreators;
 
-    public HashMap<Player, Arena> getCooldown(){
+    public HashMap<Player, Arena> getActiveCreators(){
         return activeCreators;
     }
 
