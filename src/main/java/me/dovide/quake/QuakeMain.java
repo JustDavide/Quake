@@ -1,11 +1,15 @@
 package me.dovide.quake;
 
+import me.dovide.quake.commands.arena.ArenaCommand;
+import me.dovide.quake.commands.arena.sub.Create;
 import me.dovide.quake.commands.quake.QuakeCommand;
 import me.dovide.quake.db.Database;
 import me.dovide.quake.game.GameManager;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.listeners.GunClick;
+import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
+import me.dovide.quake.utils.CreatorManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,6 +23,8 @@ public final class QuakeMain extends JavaPlugin {
     private Config arenas;
     private ArenaManager arenaManager;
     private GameManager gameManager;
+    private CreatorManager creatorManager;
+    private CDManager cdManager;
 
     @Override
     public void onEnable() {
@@ -47,7 +53,12 @@ public final class QuakeMain extends JavaPlugin {
         arenaManager.initArenas();
         this.gameManager = new GameManager(this, arenaManager);
 
+        this.cdManager = new CDManager();
+        this.creatorManager = new CreatorManager();
+
         getCommand("quake").setExecutor(new QuakeCommand(this));
+        getCommand("arena").setExecutor(new ArenaCommand(this));
+
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
     }
 
@@ -95,5 +106,13 @@ public final class QuakeMain extends JavaPlugin {
 
     public GameManager getGameManager(){
         return gameManager;
+    }
+
+    public CDManager getCdManager(){
+        return cdManager;
+    }
+
+    public CreatorManager getCreatorManager(){
+        return creatorManager;
     }
 }

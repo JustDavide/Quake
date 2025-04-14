@@ -45,7 +45,6 @@ public class QuakeCommand implements TabExecutor {
             return true;
         }
 
-
         String subName = args[0].toLowerCase();
         SubCommand sub = subCommands.get(subName);
 
@@ -53,7 +52,6 @@ public class QuakeCommand implements TabExecutor {
             sub.execute(player, args);
         else
             player.sendMessage("Sub doesn't exist");
-
 
         return true;
     }

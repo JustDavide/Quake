@@ -6,3 +6,4 @@ authors: [ Dovide ]
 description: Quake Plugin - Test For CoralMC
 commands:
   quake:
+  arena:

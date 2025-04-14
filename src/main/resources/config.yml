@@ -1,6 +1,7 @@
 misc:
   range: 45
   cooldown: 2000 # Cooldown in millisecondi (1s = 1000ms)
+  required_score: 10
 
 db:
   url: localhost
@@ -15,3 +16,4 @@ perms:
     reload: quake.reload
   arena:
     command: arena.command
+    create: arena.create

@@ -30,7 +30,7 @@ public class Get extends SubCommand {
             return;
         }
 
-        if(player.hasPermission(config.getString("perms.quake.get"))){
+        if(!player.hasPermission(config.getString("perms.quake.get"))){
             player.sendMessage("No Perms");
             return;
         }

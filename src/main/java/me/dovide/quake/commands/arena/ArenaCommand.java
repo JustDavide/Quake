@@ -2,10 +2,13 @@ package me.dovide.quake.commands.arena;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
+import me.dovide.quake.commands.arena.sub.Create;
 import me.dovide.quake.commands.quake.sub.Get;
 import me.dovide.quake.commands.quake.sub.Join;
 import me.dovide.quake.commands.quake.sub.Leave;
 import me.dovide.quake.commands.quake.sub.Reload;
+import me.dovide.quake.game.arena.Arena;
+import me.dovide.quake.utils.Config;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,8 +22,12 @@ import java.util.List;
 public class ArenaCommand implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
+    private final Config config;
 
     public ArenaCommand(QuakeMain instance){
+        this.config = instance.getConfig();
+
+        registerSubCommand(new Create(instance));
     }
 
     private void registerSubCommand(SubCommand sub){
@@ -41,6 +48,10 @@ public class ArenaCommand implements TabExecutor {
             return true;
         }
 
+        if(!player.hasPermission(config.getString("perms.arena.command"))){
+            player.sendMessage("No Perms");
+            return true;
+        }
 
         String subName = args[0].toLowerCase();
         SubCommand sub = subCommands.get(subName);
@@ -61,5 +72,6 @@ public class ArenaCommand implements TabExecutor {
         }
         return Collections.emptyList();
     }
+
 
 }

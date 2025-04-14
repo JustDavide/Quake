@@ -28,7 +28,7 @@ public class Reload extends SubCommand {
             return;
         }
 
-        if(player.hasPermission(config.getString("perms.quake.reload"))){
+        if(!player.hasPermission(config.getString("perms.quake.reload"))){
             player.sendMessage("No Perms");
             return;
         }

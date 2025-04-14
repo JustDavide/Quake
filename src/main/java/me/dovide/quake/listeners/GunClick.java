@@ -33,7 +33,7 @@ public class GunClick implements Listener {
     public GunClick(QuakeMain instance){
         this.config = instance.getConfig();
         this.items = new Items();
-        this.cdManager = new CDManager();
+        this.cdManager = instance.getCdManager();
         this.database = new Database(instance);
         this.gameManager = instance.getGameManager();
     }
@@ -120,6 +120,10 @@ public class GunClick implements Listener {
 
         GamePlayer gamePlayer = gameInstance.getPlayers().get(player.getUniqueId());
         gamePlayer.addScore();
+
+        if(gamePlayer.getScore() >= config.getInt("misc.required_score")){
+            // End Game TODO
+        }
     }
 
 }
