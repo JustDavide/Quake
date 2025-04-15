@@ -51,8 +51,10 @@ public final class QuakeMain extends JavaPlugin {
         }
 
         this.arenaManager = new ArenaManager(this);
-        arenaManager.initArenas();
         this.gameManager = new GameManager(this, arenaManager);
+        arenaManager.setGameManager(gameManager);
+        arenaManager.initArenas();
+        gameManager.updateCache();
 
         this.cdManager = new CDManager();
         this.creatorManager = new CreatorManager();

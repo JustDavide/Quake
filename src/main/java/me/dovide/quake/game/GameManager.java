@@ -13,12 +13,11 @@ public class GameManager {
     private final Map<Player, Arena> playersInGame = new HashMap<>();
     private final Map<String, GameInstance> games = new HashMap<>();
     private final ArenaManager arenaManager;
+    private final QuakeMain instance;
 
     public GameManager(QuakeMain instance, ArenaManager arenaManager){
+        this.instance = instance;
         this.arenaManager = arenaManager;
-        for (Arena arena : arenaManager.getActiveArenas().keySet()){
-            games.put(arena.getID(), new GameInstance(arena, instance));
-        }
     }
 
     public GameInstance getGame(String id){
@@ -42,19 +41,24 @@ public class GameManager {
         }
         game.playerJoin(player);
         playersInGame.put(player, arenaManager.getArena(arenaId));
-        player.sendMessage("Sei entrato nell'arena");
     }
 
     public void leaveArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
-        playersInGame.remove(player);
         if (game != null) {
+            playersInGame.remove(player);
             game.playerLeave(player);
         }
     }
 
     public Map<Player, Arena> getPlayersInGame(){
         return playersInGame;
+    }
+
+    public void updateCache(){
+        for (Arena arena : arenaManager.getActiveArenas().keySet()){
+            games.put(arena.getID(), new GameInstance(arena, instance));
+        }
     }
 
 }

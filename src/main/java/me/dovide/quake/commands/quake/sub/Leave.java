@@ -20,7 +20,7 @@ public class Leave extends SubCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-        if(args.length != 2){
+        if(args.length != 1){
             player.sendMessage("Wrong Args");
             return;
         }
@@ -32,5 +32,6 @@ public class Leave extends SubCommand {
 
         String arenaID = gameManager.getPlayersInGame().get(player).getID();
         gameManager.leaveArena(arenaID, player);
+        player.sendMessage("Hai lasciato l'arena");
     }
 }

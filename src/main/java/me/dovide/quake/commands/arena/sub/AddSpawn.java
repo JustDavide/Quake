@@ -57,5 +57,6 @@ public class AddSpawn extends SubCommand {
         locations.add(player.getLocation());
         arena.setWorldUUID(player.getWorld().getUID());
         arena.setSpawns(locations);
+        player.sendMessage("Spawn added");
     }
 }

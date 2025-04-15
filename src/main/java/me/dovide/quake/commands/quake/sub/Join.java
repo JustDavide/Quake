@@ -32,5 +32,6 @@ public class Join extends SubCommand {
 
         String id = args[1];
         gameManager.joinArena(id, player);
+        player.sendMessage("Sei entrato nell'arena");
     }
 }

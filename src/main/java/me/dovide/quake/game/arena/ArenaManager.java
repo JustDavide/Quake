@@ -1,6 +1,7 @@
 package me.dovide.quake.game.arena;
 
 import me.dovide.quake.QuakeMain;
+import me.dovide.quake.game.GameManager;
 import me.dovide.quake.game.GameState;
 import me.dovide.quake.utils.Config;
 import org.bukkit.Bukkit;
@@ -14,6 +15,8 @@ public class ArenaManager {
 
     private final Config arenas;
     private final QuakeMain instance;
+    private GameManager gameManager;
+    public Map<Arena, GameState> activeArenas;
 
     public ArenaManager(QuakeMain instance){
         this.activeArenas = new HashMap<>();
@@ -21,8 +24,6 @@ public class ArenaManager {
         this.instance = instance;
         this.arenas = instance.getArenas();
     }
-
-    public Map<Arena, GameState> activeArenas;
 
     public void createArena(Arena arena){
 
@@ -45,13 +46,17 @@ public class ArenaManager {
             arenas.set(id + ".spawns." + i + ".z", loc.getZ());
         }
 
+        activeArenas.put(arena, GameState.WAITING);
+        gameManager.updateCache();
         instance.saveArenas();
     }
 
     public Arena getArena(String id){
 
-        if(arenas.get(id) == null)
+        if(arenas.get(id) == null) {
+            System.out.println(id + " is null");
             return null;
+        }
 
         Arena arena = new Arena();
 
@@ -85,6 +90,8 @@ public class ArenaManager {
         arena.setMinPlayers(minPlayers);
         arena.setSpawns(spawns);
 
+        System.out.println("returning the arena");
+
         return arena;
     }
 
@@ -92,12 +99,17 @@ public class ArenaManager {
         ConfigurationSection section = arenas.getConfigurationSection(""); // root
 
         for(String id : section.getKeys(false)){
+            System.out.println(id);
             activeArenas.put(getArena(id), GameState.WAITING);
         }
     }
 
     public Map<Arena, GameState> getActiveArenas(){
         return activeArenas;
+    }
+
+    public void setGameManager(GameManager gameManager){
+        this.gameManager = gameManager;
     }
 
 }

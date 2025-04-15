@@ -49,6 +49,6 @@ public class Create extends SubCommand {
         arena.setID(arenaID);
 
         creatorManager.getActiveCreators().put(player, arena);
-        player.sendMessage("Arena created. Use /arena <sub-command> to edit it");
+        player.sendMessage("Arena in creation. Use /arena <sub-command> to edit it");
     }
 }

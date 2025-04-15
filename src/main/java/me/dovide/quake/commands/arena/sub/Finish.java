@@ -51,6 +51,6 @@ public class Finish extends SubCommand {
         }
 
         arenaManager.createArena(arena);
-
+        player.sendMessage("Arena created!");
     }
 }
