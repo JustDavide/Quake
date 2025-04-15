@@ -11,8 +11,8 @@ public class Arena {
     public UUID worldUUID;
     public List<Location> spawns;
     public Location lobby;
-    public int maxPlayers;
-    public int minPlayers;
+    public Integer maxPlayers;
+    public Integer minPlayers;
 
     public Arena(String ID, UUID worldUUID, List<Location> spawns, Location lobby, int maxPlayers, int minPlayers) {
         this.ID = ID;
@@ -72,6 +72,10 @@ public class Arena {
 
     public void setMinPlayers(int minPlayers) {
         this.minPlayers = minPlayers;
+    }
+
+    public boolean isAnyNull(){
+        return this.ID == null || this.worldUUID == null || this.spawns == null || this.lobby == null || this.maxPlayers == null || this.minPlayers == null;
     }
 
 }

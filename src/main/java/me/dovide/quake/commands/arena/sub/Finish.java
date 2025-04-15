@@ -44,6 +44,12 @@ public class Finish extends SubCommand {
         }
 
         Arena arena = creatorManager.getActiveCreators().get(player);
+
+        if(arena.isAnyNull()){
+            player.sendMessage("Didn't set everything. Check again");
+            return;
+        }
+
         arenaManager.createArena(arena);
 
     }
