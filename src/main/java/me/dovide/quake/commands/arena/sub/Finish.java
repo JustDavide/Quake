@@ -33,7 +33,7 @@ public class Finish extends SubCommand {
             return;
         }
 
-        if(player.hasPermission(config.getString("perms.arena.setup"))){
+        if(!player.hasPermission(config.getString("perms.arena.setup"))){
             player.sendMessage("No Perms");
             return;
         }
