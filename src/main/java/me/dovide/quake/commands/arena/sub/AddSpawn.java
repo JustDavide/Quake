@@ -24,7 +24,7 @@ public class AddSpawn extends SubCommand {
 
     @Override
     public String getName() {
-        return "addSpawn";
+        return "addspawn";
     }
 
     @Override

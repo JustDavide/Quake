@@ -19,7 +19,7 @@ public class SetMinPlayers extends SubCommand {
 
     @Override
     public String getName() {
-        return "setMinPlayers";
+        return "setminplayers";
     }
 
     @Override

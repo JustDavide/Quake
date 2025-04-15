@@ -20,7 +20,7 @@ public class SetLobby extends SubCommand {
 
     @Override
     public String getName() {
-        return "setLobby";
+        return "setlobby";
     }
 
     @Override

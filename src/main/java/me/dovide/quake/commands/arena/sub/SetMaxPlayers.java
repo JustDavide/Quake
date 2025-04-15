@@ -19,7 +19,7 @@ public class SetMaxPlayers extends SubCommand {
 
     @Override
     public String getName() {
-        return "setMaxPlayers";
+        return "setmaxplayers";
     }
 
     @Override

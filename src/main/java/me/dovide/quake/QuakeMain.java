@@ -50,6 +50,7 @@ public final class QuakeMain extends JavaPlugin {
             err.printStackTrace();
         }
 
+        this.arenaManager = new ArenaManager(this);
         arenaManager.initArenas();
         this.gameManager = new GameManager(this, arenaManager);
 
