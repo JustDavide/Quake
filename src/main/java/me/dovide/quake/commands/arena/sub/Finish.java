@@ -3,28 +3,26 @@ package me.dovide.quake.commands.arena.sub;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
 import me.dovide.quake.game.arena.Arena;
+import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AddSpawn extends SubCommand {
+public class Finish extends SubCommand {
 
     private final Config config;
     private final CreatorManager creatorManager;
+    private final ArenaManager arenaManager;
 
-    public AddSpawn(QuakeMain instance){
+    public Finish(QuakeMain instance){
         this.config = instance.getConfig();
         this.creatorManager = instance.getCreatorManager();
+        this.arenaManager = instance.getArenaManager();
     }
-
 
     @Override
     public String getName() {
-        return "addSpawn";
+        return "finish";
     }
 
     @Override
@@ -35,27 +33,18 @@ public class AddSpawn extends SubCommand {
             return;
         }
 
-        if(!player.hasPermission(config.getString("perms.arena.setup"))){
-            player.sendMessage("No perms");
+        if(player.hasPermission(config.getString("perms.arena.setup"))){
+            player.sendMessage("No Perms");
             return;
         }
 
         if(!creatorManager.getActiveCreators().containsKey(player)){
-            player.sendMessage("not creating");
+            player.sendMessage("Not creating");
             return;
         }
 
         Arena arena = creatorManager.getActiveCreators().get(player);
+        arenaManager.createArena();
 
-        List<Location> locations;
-
-        if(arena.getSpawns() == null || arena.getSpawns().isEmpty())
-            locations = new ArrayList<>();
-        else
-            locations = arena.getSpawns();
-
-        locations.add(player.getLocation());
-        arena.setWorldUUID(player.getWorld().getUID());
-        arena.setSpawns(locations);
     }
 }

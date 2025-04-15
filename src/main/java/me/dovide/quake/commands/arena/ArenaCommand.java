@@ -2,7 +2,7 @@ package me.dovide.quake.commands.arena;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
-import me.dovide.quake.commands.arena.sub.Create;
+import me.dovide.quake.commands.arena.sub.*;
 import me.dovide.quake.commands.quake.sub.Get;
 import me.dovide.quake.commands.quake.sub.Join;
 import me.dovide.quake.commands.quake.sub.Leave;
@@ -28,6 +28,11 @@ public class ArenaCommand implements TabExecutor {
         this.config = instance.getConfig();
 
         registerSubCommand(new Create(instance));
+        registerSubCommand(new AddSpawn(instance));
+        registerSubCommand(new Finish(instance));
+        registerSubCommand(new SetLobby(instance));
+        registerSubCommand(new SetMaxPlayers(instance));
+        registerSubCommand(new SetMinPlayers(instance));
     }
 
     private void registerSubCommand(SubCommand sub){

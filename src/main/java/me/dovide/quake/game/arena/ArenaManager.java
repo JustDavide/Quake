@@ -24,25 +24,28 @@ public class ArenaManager {
 
     public Map<Arena, GameState> activeArenas;
 
-    public void createArena(String id, World world, Location lobby, List<Location> spawns, int maxPlayers, int minPlayers){
-       arenas.set(id + ".world", world.getUID().toString()); // UUID del mondo per essere più accurati e per evitare problemi (cambio nome del mondo)
-       arenas.set(id + ".max_players", maxPlayers);
-       arenas.set(id + ".min_players", minPlayers);
+    public void createArena(Arena arena){
 
-       arenas.set(id + ".lobby.x", lobby.getX());
-       arenas.set(id + ".lobby.y", lobby.getY());
-       arenas.set(id + ".lobby.z", lobby.getZ());
-       arenas.set(id + ".lobby.world", lobby.getWorld().getUID().toString());
+        String id = arena.getID();
 
-       for (int i = 0; i < spawns.size(); i++){
-           Location loc = spawns.get(i);
+        arenas.set(id + ".world", arena.getWorldUUID().toString()); // UUID del mondo per essere più accurati e per evitare problemi (cambio nome del mondo)
+        arenas.set(id + ".max_players", arena.getMaxPlayers());
+        arenas.set(id + ".min_players", arena.getMinPlayers());
 
-           arenas.set(id + ".spawns." + i + ".x", loc.getX());
-           arenas.set(id + ".spawns." + i + ".y", loc.getY());
-           arenas.set(id + ".spawns." + i + ".z", loc.getZ());
-       }
+        arenas.set(id + ".lobby.x", arena.getLobby().getX());
+        arenas.set(id + ".lobby.y", arena.getLobby().getY());
+        arenas.set(id + ".lobby.z", arena.getLobby().getZ());
+        arenas.set(id + ".lobby.world", arena.getLobby().getWorld().getUID().toString());
 
-       instance.saveArenas();
+        for (int i = 0; i < arena.getSpawns().size(); i++){
+            Location loc = arena.getSpawns().get(i);
+
+            arenas.set(id + ".spawns." + i + ".x", loc.getX());
+            arenas.set(id + ".spawns." + i + ".y", loc.getY());
+            arenas.set(id + ".spawns." + i + ".z", loc.getZ());
+        }
+
+        instance.saveArenas();
     }
 
     public Arena getArena(String id){
