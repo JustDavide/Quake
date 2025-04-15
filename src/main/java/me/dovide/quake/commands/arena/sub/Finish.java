@@ -44,7 +44,7 @@ public class Finish extends SubCommand {
         }
 
         Arena arena = creatorManager.getActiveCreators().get(player);
-        arenaManager.createArena();
+        arenaManager.createArena(arena);
 
     }
 }
