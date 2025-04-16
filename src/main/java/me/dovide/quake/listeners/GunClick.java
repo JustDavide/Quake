@@ -4,7 +4,6 @@ import me.dovide.quake.QuakeMain;
 import me.dovide.quake.db.Database;
 import me.dovide.quake.game.GameInstance;
 import me.dovide.quake.game.GameManager;
-import me.dovide.quake.game.GamePlayer;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
@@ -16,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -41,9 +41,6 @@ public class GunClick implements Listener {
     @EventHandler
     public void GunShoot(PlayerInteractEvent e){
 
-        if(!gameManager.isPlayerInGame(e.getPlayer())) // Check per evitare che persone al di fuori del game possano sparare
-            return;
-
         HashMap<Player, Long> cooldown = cdManager.getCooldown();
         int cooldownTime = config.getInt("misc.cooldown");
         Player player = e.getPlayer();
@@ -51,7 +48,13 @@ public class GunClick implements Listener {
 
         if(!item.equals(items.getGun())) return;
 
-        if(e.getAction() != Action.RIGHT_CLICK_AIR || e.getAction() != Action.RIGHT_CLICK_BLOCK){ // check per RMB
+        if(e.getHand() != EquipmentSlot.HAND) return; // Ignora Off-Hand
+
+        if(!gameManager.isPlayerInGame(e.getPlayer())) { // Check per evitare che persone al di fuori del game possano sparare
+            return;
+        }
+
+        if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK){ // check per RMB
             e.setCancelled(true); // cancella qualasiasi azione se non per sparare
             return;
         }
@@ -106,23 +109,14 @@ public class GunClick implements Listener {
 
                     player.sendMessage("Hai colpito: " + entity.getName());
                     entity.sendMessage("Sei stato colpito da: " + player.getName());
-                    assignPoint(player);
+
+                    GameInstance gameInstance = gameManager.getGame(arena.getID());
+
+                    gameInstance.assignPoint(player);
                     return;
                 }
             }
 
-        }
-    }
-
-    private void assignPoint(Player player){
-        String gameID = gameManager.getPlayersInGame().get(player).getID();
-        GameInstance gameInstance = gameManager.getGame(gameID);
-
-        GamePlayer gamePlayer = gameInstance.getPlayers().get(player.getUniqueId());
-        gamePlayer.addScore();
-
-        if(gamePlayer.getScore() >= config.getInt("misc.required_score")){
-            // End Game TODO
         }
     }
 

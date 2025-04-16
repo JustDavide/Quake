@@ -53,10 +53,9 @@ public class ArenaManager {
 
     public Arena getArena(String id){
 
-        if(arenas.get(id) == null) {
-            System.out.println(id + " is null");
+        if(arenas.get(id) == null)
             return null;
-        }
+
 
         Arena arena = new Arena();
 
@@ -90,8 +89,6 @@ public class ArenaManager {
         arena.setMinPlayers(minPlayers);
         arena.setSpawns(spawns);
 
-        System.out.println("returning the arena");
-
         return arena;
     }
 
@@ -99,7 +96,6 @@ public class ArenaManager {
         ConfigurationSection section = arenas.getConfigurationSection(""); // root
 
         for(String id : section.getKeys(false)){
-            System.out.println(id);
             activeArenas.put(getArena(id), GameState.WAITING);
         }
     }

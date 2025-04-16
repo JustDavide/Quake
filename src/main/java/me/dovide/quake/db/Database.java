@@ -66,10 +66,10 @@ public class Database {
     }
 
     public PlayerStats getPlayerStats(UUID playerUUID) throws SQLException{
-        Statement statement = getConnection().createStatement();
-        String selection = "SELECT * FROM player_STATS WHERE player_uuid = " + playerUUID;
+        PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM player_STATS WHERE player_uuid = ?");
 
-        ResultSet results = statement.executeQuery(selection);
+        statement.setString(1, playerUUID.toString());
+        ResultSet results = statement.executeQuery();
 
         if(results.next()){ // Prendo solo il primo risultato in quanto di player UUID dovrebbe essercene solo uno
             UUID uuid = UUID.fromString(results.getString("player_uuid"));
@@ -81,7 +81,11 @@ public class Database {
         }
 
         statement.close();
-        return new PlayerStats(playerUUID, 0, 0); // Fail-Safe se il player non è ancora stato registrato nel db
+
+        PlayerStats stats = new PlayerStats(playerUUID, 0, 0); // Fail-Safe se il player non è ancora stato registrato nel db
+
+        registerPlayer(stats);
+        return stats;
     }
 
 }

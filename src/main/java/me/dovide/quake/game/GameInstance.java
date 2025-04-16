@@ -1,18 +1,20 @@
 package me.dovide.quake.game;
 
 import me.dovide.quake.QuakeMain;
+import me.dovide.quake.db.Database;
+import me.dovide.quake.db.obj.PlayerStats;
 import me.dovide.quake.game.arena.Arena;
+import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.Items;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.SQLException;
+import java.util.*;
 
 public class GameInstance {
 
@@ -23,10 +25,17 @@ public class GameInstance {
     private GameState state = GameState.WAITING;
     private final QuakeMain instance;
     private final Items items;
+    private final Config config;
+    private final GameManager gameManager;
+    private final Database db;
 
     private BukkitRunnable countdown;
 
     public GameInstance(Arena arena, QuakeMain instance){
+        this.config = instance.getConfig();
+        this.gameManager = instance.getGameManager();
+        this.db = new Database(instance);
+
         this.arena = arena;
         this.instance = instance;
         this.items = new Items();
@@ -109,6 +118,38 @@ public class GameInstance {
         for(GamePlayer gp : players.values()){
             gp.getPlayer().teleport(spawns.get(i++ % spawns.size())); // Fa in modo che ogni spawn viene utilizzato
             gp.getPlayer().getInventory().addItem(items.getGun());
+        }
+    }
+
+    public void assignPoint(Player player){
+        GamePlayer gamePlayer = this.getPlayers().get(player.getUniqueId());
+        gamePlayer.addScore();
+
+        if(gamePlayer.getScore() >= config.getInt("misc.required_score")){
+            state = GameState.ENDING;
+            stopGame(player);
+            state = GameState.WAITING;
+        }
+    }
+
+    public void stopGame(Player winner) {
+        try {
+            for (GamePlayer player : new ArrayList<>(this.getPlayers().values())) {
+                int score = player.getScore();
+
+                gameManager.leaveArena(arena.ID, player.getPlayer());
+
+                PlayerStats stats = db.getPlayerStats(player.getPlayer().getUniqueId());
+                stats.setKills(stats.getKills()+score);
+                db.registerPlayer(stats); // Da fixare duplicati
+            }
+
+            PlayerStats stats = db.getPlayerStats(winner.getUniqueId());
+            stats.setWins(stats.getWins() + 1);
+            db.registerPlayer(stats);
+        } catch (SQLException err) {
+            Bukkit.getLogger().severe("SQL ERROR");
+            err.printStackTrace();
         }
     }
 
