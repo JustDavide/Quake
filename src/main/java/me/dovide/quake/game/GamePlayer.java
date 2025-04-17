@@ -24,9 +24,5 @@ public class GamePlayer {
         this.score += 1;
     }
 
-    public void resetScore(){
-        this.score = 0;
-    }
-
 
 }

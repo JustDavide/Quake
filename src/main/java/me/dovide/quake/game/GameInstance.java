@@ -6,10 +6,10 @@ import me.dovide.quake.db.obj.PlayerStats;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.Items;
+import me.dovide.quake.utils.ScoreboardTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -30,6 +30,7 @@ public class GameInstance {
     private final Database db;
 
     private BukkitRunnable countdown;
+    private final ScoreboardTask scoreboardTask;
 
     public GameInstance(Arena arena, QuakeMain instance){
         this.config = instance.getConfig();
@@ -39,6 +40,7 @@ public class GameInstance {
         this.arena = arena;
         this.instance = instance;
         this.items = new Items();
+        this.scoreboardTask = new ScoreboardTask(instance, this);
     }
 
     public void playerJoin(Player player){
@@ -95,12 +97,12 @@ public class GameInstance {
 
                 players.values().forEach(p -> p.getPlayer().sendMessage("Il Gioco inizierà tra " + timer + " secondi"));
                 timer--;
-
-
             }
         };
 
         countdown.runTaskTimer(instance, 0L, 20L);
+
+        scoreboardTask.runTaskTimerAsynchronously(instance, 0L, 20L);
     }
 
     private void cancelCountdown(){
@@ -140,22 +142,28 @@ public class GameInstance {
                 gameManager.leaveArena(arena.ID, player.getPlayer());
 
                 PlayerStats stats = db.getPlayerStats(player.getPlayer().getUniqueId());
-                stats.setKills(stats.getKills()+score);
-                db.registerPlayer(stats); // Da fixare duplicati
+
+                if(stats != null) {
+                    stats.setKills(stats.getKills() + score);
+                    db.updatePlayer(stats); // Da fixare duplicati
+                }else{
+                    stats = new PlayerStats(player.getPlayer().getUniqueId(), player.getScore(), 0);
+                    db.registerPlayer(stats);
+                }
+
+                scoreboardTask.getScoreManager().getActiveBoards().get(player).delete();
             }
 
-            PlayerStats stats = db.getPlayerStats(winner.getUniqueId());
+            PlayerStats stats = db.getPlayerStats(winner.getUniqueId()); // Non ho bisogno del null check dato che ho controllato prima
             stats.setWins(stats.getWins() + 1);
-            db.registerPlayer(stats);
+            db.updatePlayer(stats);
         } catch (SQLException err) {
             Bukkit.getLogger().severe("SQL ERROR");
             err.printStackTrace();
         }
+
     }
 
-    public GameState getState(){
-        return state;
-    }
 
     public Map<UUID, GamePlayer> getPlayers(){
         return players;

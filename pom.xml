@@ -85,5 +85,10 @@
             <artifactId>DovideUtil</artifactId>
             <version>1.7</version>
         </dependency>
+        <dependency>
+            <groupId>fr.mrmicky</groupId>
+            <artifactId>fastboard</artifactId>
+            <version>2.1.4</version>
+        </dependency>
     </dependencies>
 </project>

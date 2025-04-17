@@ -17,3 +17,4 @@ perms:
   arena:
     command: arena.command
     setup: arena.setup
+    delete: arena.delete

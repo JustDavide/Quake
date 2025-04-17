@@ -1,7 +1,6 @@
 package me.dovide.quake;
 
 import me.dovide.quake.commands.arena.ArenaCommand;
-import me.dovide.quake.commands.arena.sub.Create;
 import me.dovide.quake.commands.quake.QuakeCommand;
 import me.dovide.quake.db.Database;
 import me.dovide.quake.game.GameManager;
@@ -10,6 +9,7 @@ import me.dovide.quake.listeners.GunClick;
 import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
+import me.dovide.quake.utils.ScoreManager;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +25,7 @@ public final class QuakeMain extends JavaPlugin {
     private GameManager gameManager;
     private CreatorManager creatorManager;
     private CDManager cdManager;
+    private ScoreManager scoreManager;
 
     @Override
     public void onEnable() {
@@ -58,6 +59,7 @@ public final class QuakeMain extends JavaPlugin {
 
         this.cdManager = new CDManager();
         this.creatorManager = new CreatorManager();
+        this.scoreManager = new ScoreManager();
 
         getCommand("quake").setExecutor(new QuakeCommand(this));
         getCommand("arena").setExecutor(new ArenaCommand(this));
@@ -117,5 +119,9 @@ public final class QuakeMain extends JavaPlugin {
 
     public CreatorManager getCreatorManager(){
         return creatorManager;
+    }
+
+    public ScoreManager getScoreManager(){
+        return scoreManager;
     }
 }

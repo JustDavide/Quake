@@ -61,4 +61,8 @@ public class GameManager {
         }
     }
 
+    public Map<String, GameInstance> getGames(){
+        return games;
+    }
+
 }

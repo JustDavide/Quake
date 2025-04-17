@@ -65,6 +65,17 @@ public class Database {
         statement.close();
     }
 
+    public void updatePlayer(PlayerStats stats) throws SQLException{
+        PreparedStatement statement = getConnection().prepareStatement("UPDATE player_stats SET kills = ?, wins = ? WHERE player_uuid = ?");
+
+        statement.setInt(1, stats.getKills());
+        statement.setInt(2, stats.getWins());
+        statement.setString(3, stats.getPlayerUUID().toString());
+
+        statement.executeUpdate();
+        statement.close();
+    }
+
     public PlayerStats getPlayerStats(UUID playerUUID) throws SQLException{
         PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM player_STATS WHERE player_uuid = ?");
 
@@ -81,11 +92,7 @@ public class Database {
         }
 
         statement.close();
-
-        PlayerStats stats = new PlayerStats(playerUUID, 0, 0); // Fail-Safe se il player non è ancora stato registrato nel db
-
-        registerPlayer(stats);
-        return stats;
+        return null; // Nessun player registrato
     }
 
 }

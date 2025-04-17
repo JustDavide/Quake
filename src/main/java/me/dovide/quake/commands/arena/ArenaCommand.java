@@ -33,6 +33,7 @@ public class ArenaCommand implements TabExecutor {
         registerSubCommand(new SetLobby(instance));
         registerSubCommand(new SetMaxPlayers(instance));
         registerSubCommand(new SetMinPlayers(instance));
+        registerSubCommand(new Delete(instance));
     }
 
     private void registerSubCommand(SubCommand sub){
