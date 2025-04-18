@@ -102,7 +102,6 @@ public class GameInstance {
 
         countdown.runTaskTimer(instance, 0L, 20L);
 
-        scoreboardTask.runTaskTimerAsynchronously(instance, 0L, 20L);
     }
 
     private void cancelCountdown(){
@@ -121,6 +120,8 @@ public class GameInstance {
             gp.getPlayer().teleport(spawns.get(i++ % spawns.size())); // Fa in modo che ogni spawn viene utilizzato
             gp.getPlayer().getInventory().addItem(items.getGun());
         }
+
+        scoreboardTask.runTaskTimerAsynchronously(instance, 0L, 20L);
     }
 
     public void assignPoint(Player player){
