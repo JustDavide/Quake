@@ -152,6 +152,7 @@ public class GameInstance {
                 }
 
                 scoreboardTask.getScoreManager().getActiveBoards().get(player).delete();
+                player.getPlayer().sendMessage("Game Over. " + winner.getName() + " won");
             }
 
             PlayerStats stats = db.getPlayerStats(winner.getUniqueId()); // Non ho bisogno del null check dato che ho controllato prima

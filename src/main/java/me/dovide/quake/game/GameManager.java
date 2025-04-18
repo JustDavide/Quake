@@ -41,6 +41,7 @@ public class GameManager {
         }
         game.playerJoin(player);
         playersInGame.put(player, arenaManager.getArena(arenaId));
+        player.sendMessage("Sei entrato nell'arena");
     }
 
     public void leaveArena(String arenaId, Player player) {

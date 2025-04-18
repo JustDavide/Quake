@@ -23,13 +23,12 @@ public class ScoreManager {
         board.updateTitle(Util.cc("&bQuake Game"));
 
         List<String> lines = new ArrayList<>();
-        lines.add(""); // Empty line for spacing or aesthetic
+        lines.add("");
 
         for (GamePlayer gp : players) {
             String name = gp.getPlayer().getName();
             int score = gp.getScore();
 
-            // Format it however you want
             lines.add(Util.cc("&f" + name + ": &e" + score));
         }
 
