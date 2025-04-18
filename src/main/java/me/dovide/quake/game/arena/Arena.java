@@ -7,12 +7,12 @@ import java.util.UUID;
 
 public class Arena {
 
-    public String ID;
-    public UUID worldUUID;
-    public List<Location> spawns;
-    public Location lobby;
-    public Integer maxPlayers;
-    public Integer minPlayers;
+    private String ID;
+    private UUID worldUUID;
+    private List<Location> spawns;
+    private Location lobby;
+    private Integer maxPlayers;
+    private Integer minPlayers;
 
     public Arena(String ID, UUID worldUUID, List<Location> spawns, Location lobby, int maxPlayers, int minPlayers) {
         this.ID = ID;

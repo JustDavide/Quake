@@ -26,7 +26,6 @@ public class ArenaManager {
     }
 
     public void createArena(Arena arena){
-
         String id = arena.getID();
 
         arenas.set(id + ".world", arena.getWorldUUID().toString()); // UUID del mondo per essere più accurati e per evitare problemi (cambio nome del mondo)

@@ -2,32 +2,26 @@ package me.dovide.quake.commands.arena.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
-import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
 import me.dovide.quake.utils.LOCALE;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Cancel extends SubCommand {
 
-public class AddSpawn extends SubCommand {
-
-    private final Config config;
-    private final CreatorManager creatorManager;
     private final QuakeMain instance;
+    private final CreatorManager creatorManager;
+    private final Config config;
 
-    public AddSpawn(QuakeMain instance){
-        this.config = instance.getConfig();
-        this.creatorManager = instance.getCreatorManager();
+    public Cancel(QuakeMain instance){
         this.instance = instance;
+        this.creatorManager = instance.getCreatorManager();
+        this.config = instance.getConfig();
     }
-
 
     @Override
     public String getName() {
-        return "addspawn";
+        return "cancel";
     }
 
     @Override
@@ -48,18 +42,8 @@ public class AddSpawn extends SubCommand {
             return;
         }
 
-        Arena arena = creatorManager.getActiveCreators().get(player);
+        creatorManager.getActiveCreators().remove(player);
+        player.sendMessage(LOCALE.STOPPED_CREATING.msg(instance));
 
-        List<Location> locations;
-
-        if(arena.getSpawns() == null || arena.getSpawns().isEmpty())
-            locations = new ArrayList<>();
-        else
-            locations = arena.getSpawns();
-
-        locations.add(player.getLocation());
-        arena.setWorldUUID(player.getWorld().getUID());
-        arena.setSpawns(locations);
-        player.sendMessage(LOCALE.SPAWN_ADDED.msg(instance));
     }
 }

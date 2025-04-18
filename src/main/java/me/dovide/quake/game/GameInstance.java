@@ -51,6 +51,9 @@ public class GameInstance {
         player.getInventory().clear();
         player.teleport(arena.getLobby());
 
+        players.values().forEach(p ->
+                p.getPlayer().sendMessage(player.getName() + " è entrato nell'arena (" + players.values().size() + "/" + this.arena.getMaxPlayers()));
+
         checkStart();
     }
 
@@ -140,7 +143,7 @@ public class GameInstance {
             for (GamePlayer player : new ArrayList<>(this.getPlayers().values())) {
                 int score = player.getScore();
 
-                gameManager.leaveArena(arena.ID, player.getPlayer());
+                gameManager.leaveArena(arena.getID(), player.getPlayer());
 
                 PlayerStats stats = db.getPlayerStats(player.getPlayer().getUniqueId());
 

@@ -3,12 +3,8 @@ package me.dovide.quake.commands.arena;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
 import me.dovide.quake.commands.arena.sub.*;
-import me.dovide.quake.commands.quake.sub.Get;
-import me.dovide.quake.commands.quake.sub.Join;
-import me.dovide.quake.commands.quake.sub.Leave;
-import me.dovide.quake.commands.quake.sub.Reload;
-import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -23,9 +19,11 @@ public class ArenaCommand implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
     private final Config config;
+    private final QuakeMain instance;
 
     public ArenaCommand(QuakeMain instance){
         this.config = instance.getConfig();
+        this.instance = instance;
 
         registerSubCommand(new Create(instance));
         registerSubCommand(new AddSpawn(instance));
@@ -34,6 +32,7 @@ public class ArenaCommand implements TabExecutor {
         registerSubCommand(new SetMaxPlayers(instance));
         registerSubCommand(new SetMinPlayers(instance));
         registerSubCommand(new Delete(instance));
+        registerSubCommand(new Cancel(instance));
     }
 
     private void registerSubCommand(SubCommand sub){
@@ -45,17 +44,17 @@ public class ArenaCommand implements TabExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
         if(!(commandSender instanceof Player player)){
-            commandSender.sendMessage("Can't use this here");
+            commandSender.sendMessage(LOCALE.NOT_PLAYER.msg(instance));
             return true;
         }
 
         if(args.length == 0){
-            player.sendMessage("Args wrong");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return true;
         }
 
         if(!player.hasPermission(config.getString("perms.arena.command"))){
-            player.sendMessage("No Perms");
+            player.sendMessage(LOCALE.NO_PERMS.msg(instance));
             return true;
         }
 
@@ -65,7 +64,7 @@ public class ArenaCommand implements TabExecutor {
         if(sub != null)
             sub.execute(player, args);
         else
-            player.sendMessage("Sub doesn't exist");
+            player.sendMessage(LOCALE.ARG_NOT_FOUND.msg(instance));
 
 
         return true;

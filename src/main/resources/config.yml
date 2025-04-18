@@ -18,3 +18,22 @@ perms:
     command: arena.command
     setup: arena.setup
     delete: arena.delete
+
+msg:
+  arena:
+    spawn_added: "&aSpawn Aggiunto"
+    created: "&aArena Creata. Usa i comandi di /arena <sub-command> per impostarla"
+    deleted: "&aArena Eliminata."
+    finished: "&aArena finita. Usa /quake join <nome> per entrarci."
+    not_finished: "&cNon hai impostato tutti i parametri"
+    lobby_set: "&aLobby Impostata"
+    max_players_set: "&aPlayer Massimi impostati"
+    min_players_set: "&aPlayer Minimi impostati"
+    stopped_creating: "&aHai smesso di creare l'arena."
+  errors:
+    args: "&cArgomenti Sbagliati."
+    not_player: "La console non può usare questo comando"
+    not_creating: "&cNon stai creando un'arena. Usa /arena create <nome>"
+    no_perms: "&cNon hai abbastanza permessi"
+    already_creating: "&cStai già creando un'arena, per uscire usa /arena cancel"
+    arg_not_found: "&cQuesto sub-command non esiste."
