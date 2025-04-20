@@ -1,6 +1,7 @@
 package me.dovide.quake.utils;
 
 import me.dovide.quake.QuakeMain;
+import me.dovide.utils.Util;
 
 public enum LOCALE {
 
@@ -46,7 +47,9 @@ public enum LOCALE {
     }
 
     public String msg(QuakeMain instance){
-        return instance.getConfig().getString(path, "&cMessaggio non trovato. Ricarica il config o controlla " + path);
+        String message = instance.getConfig().getString(path, "&cMessaggio non trovato. Ricarica il config o controlla " + path);
+
+        return Util.cc(message);
     }
 
 }
