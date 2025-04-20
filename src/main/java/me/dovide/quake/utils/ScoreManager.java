@@ -3,7 +3,6 @@ package me.dovide.quake.utils;
 import fr.mrmicky.fastboard.FastBoard;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.game.GamePlayer;
-import me.dovide.utils.Util;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
