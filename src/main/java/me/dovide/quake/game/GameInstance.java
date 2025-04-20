@@ -31,7 +31,7 @@ public class GameInstance {
     private final Database db;
 
     private BukkitRunnable countdown;
-    private final ScoreboardTask scoreboardTask;
+    private ScoreboardTask scoreboardTask;
 
     public GameInstance(Arena arena, QuakeMain instance){
         this.config = instance.getConfig();
@@ -70,11 +70,12 @@ public class GameInstance {
         prevPos.remove(player);
         prevInv.remove(player);
 
-        players.values().forEach(p ->
-                p.getPlayer().sendMessage(LOCALE.LEFT.msg(instance)
-                        .replace("%name%", player.getName())
-                        .replace("%current%", String.valueOf(players.values().size()))
-                        .replace("%max%", String.valueOf(arena.getMaxPlayers()))));
+        if(state != GameState.ENDING)
+            players.values().forEach(p ->
+                    p.getPlayer().sendMessage(LOCALE.LEFT.msg(instance)
+                            .replace("%name%", player.getName())
+                            .replace("%current%", String.valueOf(players.values().size()))
+                            .replace("%max%", String.valueOf(arena.getMaxPlayers()))));
 
         if(players.size() < arena.getMinPlayers() && state == GameState.STARTING){
             cancelCountdown();
@@ -115,17 +116,21 @@ public class GameInstance {
         };
 
         countdown.runTaskTimer(instance, 0L, 20L);
-
     }
 
     private void cancelCountdown(){
         if(countdown != null){
             countdown.cancel();
+            countdown = null;
         }
     }
 
     private void startGame(){
         state = GameState.PLAYING;
+
+        if(scoreboardTask == null){
+            scoreboardTask = new ScoreboardTask(instance, this);
+        }
 
         List<Location> spawns = arena.getSpawns();
         int i = 0;
@@ -145,13 +150,12 @@ public class GameInstance {
         if(gamePlayer.getScore() >= config.getInt("misc.required_score")){
             state = GameState.ENDING;
             stopGame(player);
-            state = GameState.WAITING;
         }
     }
 
     public void stopGame(Player winner) {
         try {
-            for (GamePlayer player : this.getPlayers().values()) {
+            for (GamePlayer player : new ArrayList<>(this.getPlayers().values())) { // Evita concurrent Exception
                 int score = player.getScore();
 
                 gameManager.leaveArena(arena.getID(), player.getPlayer());
@@ -166,7 +170,6 @@ public class GameInstance {
                     db.registerPlayer(stats);
                 }
 
-                scoreboardTask.getScoreManager().getActiveBoards().get(player.getPlayer()).delete();
                 player.getPlayer().sendMessage(LOCALE.GAME_OVER.msg(instance)
                         .replace("%player%", winner.getName()));
             }
@@ -176,6 +179,11 @@ public class GameInstance {
                 stats.setWins(stats.getWins() + 1);
                 db.updatePlayer(stats);
             }
+
+            scoreboardTask.cancel();
+            scoreboardTask = null;
+            state = GameState.WAITING;
+            cancelCountdown();
         } catch (SQLException err) {
             Bukkit.getLogger().severe("SQL ERROR");
             err.printStackTrace();

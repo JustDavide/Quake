@@ -40,6 +40,12 @@ public class GameManager {
             player.sendMessage(LOCALE.FULL.msg(instance));
             return;
         }
+
+        if(game.getState() == GameState.PLAYING){
+            player.sendMessage(LOCALE.ALREADY_STARTED.msg(instance));
+            return;
+        }
+
         game.playerJoin(player);
         playersInGame.put(player, arenaManager.getArena(arenaId));
         player.sendMessage(LOCALE.YOU_JOINED.msg(instance));
@@ -47,21 +53,29 @@ public class GameManager {
 
     public void leaveArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
+        if (game == null) return;
 
-        if (game == null)
-            return;
+        if (game.getState() == GameState.PLAYING && game.getPlayers().size() == 2) {
+            playersInGame.remove(player);
+            game.playerLeave(player);
 
-        if (game.getState() == GameState.PLAYING) {
-            if(game.getPlayers().size() == 2){
-                game.stopGame(game.getPlayers().values().stream().findFirst().get().getPlayer()); // Fà vincere a tappeto l'unico rimasto
+            if(instance.getScoreManager().getActiveBoards().get(player) != null) {
+                instance.getScoreManager().getActiveBoards().get(player).delete();
+                instance.getScoreManager().getActiveBoards().remove(player);
             }
+
+            game.stopGame(game.getPlayers().values().stream().findFirst().get().getPlayer());
+            return;
         }
 
         playersInGame.remove(player);
         game.playerLeave(player);
-        if(instance.getScoreManager().getActiveBoards().get(player) != null)
+        if(instance.getScoreManager().getActiveBoards().get(player) != null) {
             instance.getScoreManager().getActiveBoards().get(player).delete();
+            instance.getScoreManager().getActiveBoards().remove(player);
+        }
     }
+
 
     public Map<Player, Arena> getPlayersInGame(){
         return playersInGame;

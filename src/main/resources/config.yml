@@ -52,3 +52,4 @@ msg:
     not_playing: "&cNon sei in un game. Usa /quake join <arena> per entrare"
     recharging: "&cL'arma sta ricaricando. (%tempo% s)"
     full: "&cArena piena"
+    already_started: "&cQuesta partita è già iniziata"

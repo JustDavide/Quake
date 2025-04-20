@@ -34,7 +34,8 @@ public enum LOCALE {
     RECHARGING("msg.errors.recharging"),
     HIT("msg.arena.hit"),
     GOT_HIT("msg.arena.got_hit"),
-    FULL("msg.errors.full");
+    FULL("msg.errors.full"),
+    ALREADY_STARTED("msg.errors.already_started");
 
 
     private final String path;

@@ -24,6 +24,10 @@ public class ScoreboardTask extends BukkitRunnable {
         }
     }
 
+    @Override
+    public synchronized void cancel() throws IllegalStateException {
+        super.cancel();
+    }
 
     public ScoreManager getScoreManager(){
         return scoreManager;
