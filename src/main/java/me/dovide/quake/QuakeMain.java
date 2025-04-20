@@ -9,6 +9,7 @@ import me.dovide.quake.game.GameState;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.listeners.GunClick;
+import me.dovide.quake.listeners.PlayerLeave;
 import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
@@ -68,6 +69,7 @@ public final class QuakeMain extends JavaPlugin {
         getCommand("arena").setExecutor(new ArenaCommand(this));
 
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerLeave(this), this);
     }
 
     @Override
