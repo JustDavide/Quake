@@ -2,6 +2,9 @@ misc:
   range: 45 # Range dell'arma
   cooldown: 2000 # Cooldown in millisecondi (1s = 1000ms)
   required_score: 10 # Score
+  score:
+    title: "&bQuake Game"
+    format: "&f%player%: &e%score%"
 
 db:
   url: localhost

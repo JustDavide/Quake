@@ -39,7 +39,7 @@ public final class QuakeMain extends JavaPlugin {
         this.arenas = createConfig("arenas.yml");
         this.cdManager = new CDManager();
         this.creatorManager = new CreatorManager();
-        this.scoreManager = new ScoreManager();
+        this.scoreManager = new ScoreManager(this);
 
         Database database = new Database(this);
 
