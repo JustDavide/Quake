@@ -35,6 +35,6 @@ public class Leave extends SubCommand {
 
         String arenaID = gameManager.getPlayersInGame().get(player).getID();
         gameManager.leaveArena(arenaID, player);
-        player.sendMessage(LOCALE.LEFT.msg(instance));
+        player.sendMessage(LOCALE.YOU_LEFT.msg(instance));
     }
 }

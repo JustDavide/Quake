@@ -1,7 +1,7 @@
 misc:
-  range: 45
+  range: 45 # Range dell'arma
   cooldown: 2000 # Cooldown in millisecondi (1s = 1000ms)
-  required_score: 10
+  required_score: 10 # Score
 
 db:
   url: localhost
@@ -30,7 +30,8 @@ msg:
     max_players_set: "&aPlayer Massimi impostati"
     min_players_set: "&aPlayer Minimi impostati"
     stopped_creating: "&aHai smesso di creare l'arena."
-    left: "&aHai lasciato l'arena"
+    you_left: "&aHai lasciato l'arena"
+    left: "&7%name% &cè uscito. &7(%current%/%max%)"
     reloaded: "&aConfig ricaricato"
     joined: "&7%name% &aè entrato nell'arena &7(%current%/%max%)"
     you_joined: "&aSei entrato nell'arena"

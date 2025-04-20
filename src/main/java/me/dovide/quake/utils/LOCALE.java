@@ -24,6 +24,7 @@ public enum LOCALE {
     NOT_A_NUMBER("msg.errors.not_a_number"),
     ALREADY_PLAYING("msg.errors.already_playing"),
     NOT_PLAYING("msg.errors.not_playing"),
+    YOU_LEFT("msg.arena.you_left"),
     LEFT("msg.arena.left"),
     RELOADED("msg.arena.reloaded"),
     JOINED("msg.arena.joined"),

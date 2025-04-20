@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ScoreManager {
 
-    private final HashMap<GamePlayer, FastBoard> activeBoards;
+    private final HashMap<Player, FastBoard> activeBoards;
 
     public ScoreManager(){
         activeBoards = new HashMap<>();
@@ -33,10 +33,10 @@ public class ScoreManager {
         }
 
         board.updateLines(lines);
-        activeBoards.put(player, board);
+        activeBoards.put(player.getPlayer(), board);
     }
 
-    public HashMap<GamePlayer, FastBoard> getActiveBoards(){
+    public HashMap<Player, FastBoard> getActiveBoards(){
         return activeBoards;
     }
 

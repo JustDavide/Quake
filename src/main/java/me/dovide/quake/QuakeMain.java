@@ -32,6 +32,9 @@ public final class QuakeMain extends JavaPlugin {
 
         this.config = createConfig("config.yml");
         this.arenas = createConfig("arenas.yml");
+        this.cdManager = new CDManager();
+        this.creatorManager = new CreatorManager();
+        this.scoreManager = new ScoreManager();
 
         Database database = new Database(this);
 
@@ -56,10 +59,6 @@ public final class QuakeMain extends JavaPlugin {
         arenaManager.setGameManager(gameManager);
         arenaManager.initArenas();
         gameManager.updateCache();
-
-        this.cdManager = new CDManager();
-        this.creatorManager = new CreatorManager();
-        this.scoreManager = new ScoreManager();
 
         getCommand("quake").setExecutor(new QuakeCommand(this));
         getCommand("arena").setExecutor(new ArenaCommand(this));

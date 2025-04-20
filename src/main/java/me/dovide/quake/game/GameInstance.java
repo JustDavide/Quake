@@ -70,6 +70,12 @@ public class GameInstance {
         prevPos.remove(player);
         prevInv.remove(player);
 
+        players.values().forEach(p ->
+                p.getPlayer().sendMessage(LOCALE.LEFT.msg(instance)
+                        .replace("%name%", player.getName())
+                        .replace("%current%", String.valueOf(players.values().size()))
+                        .replace("%max%", String.valueOf(arena.getMaxPlayers()))));
+
         if(players.size() < arena.getMinPlayers() && state == GameState.STARTING){
             cancelCountdown();
             state = GameState.WAITING;
@@ -160,21 +166,22 @@ public class GameInstance {
                     db.registerPlayer(stats);
                 }
 
-                scoreboardTask.getScoreManager().getActiveBoards().get(player).delete();
+                scoreboardTask.getScoreManager().getActiveBoards().get(player.getPlayer()).delete();
                 player.getPlayer().sendMessage(LOCALE.GAME_OVER.msg(instance)
                         .replace("%player%", winner.getName()));
             }
 
-            PlayerStats stats = db.getPlayerStats(winner.getUniqueId()); // Non ho bisogno del null check dato che ho controllato prima
-            stats.setWins(stats.getWins() + 1);
-            db.updatePlayer(stats);
+            if(winner != null) {
+                PlayerStats stats = db.getPlayerStats(winner.getUniqueId()); // Non ho bisogno del null check dato che ho controllato prima
+                stats.setWins(stats.getWins() + 1);
+                db.updatePlayer(stats);
+            }
         } catch (SQLException err) {
             Bukkit.getLogger().severe("SQL ERROR");
             err.printStackTrace();
         }
 
     }
-
 
     public Map<UUID, GamePlayer> getPlayers(){
         return players;
@@ -187,6 +194,4 @@ public class GameInstance {
     public Arena getArena(){
         return arena;
     }
-
-
 }

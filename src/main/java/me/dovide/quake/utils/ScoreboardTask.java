@@ -19,11 +19,9 @@ public class ScoreboardTask extends BukkitRunnable {
 
     @Override
     public void run() {
-
         for(GamePlayer gamePlayer : gameInstance.getPlayers().values()){
             scoreManager.createScoreboard(new ArrayList<>(gameInstance.getPlayers().values()), gamePlayer);
         }
-
     }
 
 

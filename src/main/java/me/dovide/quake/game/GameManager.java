@@ -53,16 +53,14 @@ public class GameManager {
 
         if (game.getState() == GameState.PLAYING) {
             if(game.getPlayers().size() == 2){
-                game.playerLeave(player);
-                playersInGame.remove(player);
                 game.stopGame(game.getPlayers().values().stream().findFirst().get().getPlayer()); // Fà vincere a tappeto l'unico rimasto
-                return;
             }
         }
 
         playersInGame.remove(player);
         game.playerLeave(player);
-
+        if(instance.getScoreManager().getActiveBoards().get(player) != null)
+            instance.getScoreManager().getActiveBoards().get(player).delete();
     }
 
     public Map<Player, Arena> getPlayersInGame(){
