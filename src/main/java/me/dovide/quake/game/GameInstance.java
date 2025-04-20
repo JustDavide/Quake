@@ -180,6 +180,10 @@ public class GameInstance {
         return players;
     }
 
+    public GameState getState() {
+        return state;
+    }
+
     public Arena getArena(){
         return arena;
     }

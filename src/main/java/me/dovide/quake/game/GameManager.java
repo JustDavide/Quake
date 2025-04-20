@@ -47,10 +47,22 @@ public class GameManager {
 
     public void leaveArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
-        if (game != null) {
-            playersInGame.remove(player);
-            game.playerLeave(player);
+
+        if (game == null)
+            return;
+
+        if (game.getState() == GameState.PLAYING) {
+            if(game.getPlayers().size() == 2){
+                game.playerLeave(player);
+                playersInGame.remove(player);
+                game.stopGame(game.getPlayers().values().stream().findFirst().get().getPlayer()); // Fà vincere a tappeto l'unico rimasto
+                return;
+            }
         }
+
+        playersInGame.remove(player);
+        game.playerLeave(player);
+
     }
 
     public Map<Player, Arena> getPlayersInGame(){
