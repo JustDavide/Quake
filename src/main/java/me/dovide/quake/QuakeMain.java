@@ -3,7 +3,10 @@ package me.dovide.quake;
 import me.dovide.quake.commands.arena.ArenaCommand;
 import me.dovide.quake.commands.quake.QuakeCommand;
 import me.dovide.quake.db.Database;
+import me.dovide.quake.game.GameInstance;
 import me.dovide.quake.game.GameManager;
+import me.dovide.quake.game.GameState;
+import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.listeners.GunClick;
 import me.dovide.quake.utils.CDManager;
@@ -16,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public final class QuakeMain extends JavaPlugin {
 
@@ -66,6 +70,15 @@ public final class QuakeMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GunClick(this), this);
     }
 
+    @Override
+    public void onDisable() {
+        for(Arena arena : arenaManager.getActiveArenas().keySet()){
+            if (arenaManager.getActiveArenas().get(arena) == GameState.PLAYING){
+                GameInstance instance = gameManager.getGame(arena.getID());
+                instance.stopGame(null);
+            }
+        }
+    }
 
     public Config createConfig(String name) {
         File fc = new File(getDataFolder(), name);

@@ -151,7 +151,7 @@ public class GameInstance {
 
     public void stopGame(Player winner) {
         try {
-            for (GamePlayer player : new ArrayList<>(this.getPlayers().values())) {
+            for (GamePlayer player : this.getPlayers().values()) {
                 int score = player.getScore();
 
                 gameManager.leaveArena(arena.getID(), player.getPlayer());
