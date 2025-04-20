@@ -3,14 +3,17 @@ package me.dovide.quake.commands.quake.sub;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
 import me.dovide.quake.game.GameManager;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.entity.Player;
 
 public class Leave extends SubCommand {
 
     private final GameManager gameManager;
+    private final QuakeMain instance;
 
     public Leave(QuakeMain instance){
         this.gameManager = instance.getGameManager();
+        this.instance = instance;
     }
 
     @Override
@@ -21,17 +24,17 @@ public class Leave extends SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if(args.length != 1){
-            player.sendMessage("Wrong Args");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return;
         }
 
         if(!gameManager.isPlayerInGame(player)){
-            player.sendMessage("Non sei in game. Usa /quake join per entrare");
+            player.sendMessage(LOCALE.NOT_PLAYING.msg(instance));
             return;
         }
 
         String arenaID = gameManager.getPlayersInGame().get(player).getID();
         gameManager.leaveArena(arenaID, player);
-        player.sendMessage("Hai lasciato l'arena");
+        player.sendMessage(LOCALE.LEFT.msg(instance));
     }
 }

@@ -3,6 +3,7 @@ package me.dovide.quake.game;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.game.arena.ArenaManager;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -31,17 +32,17 @@ public class GameManager {
     public void joinArena(String arenaId, Player player) {
         GameInstance game = getGame(arenaId);
         if (game == null) {
-            player.sendMessage("Arena non esiste");
+            player.sendMessage(LOCALE.ARENA_NOT_FOUND.msg(instance));
             return;
         }
 
         if (game.getPlayers().size() >= game.getArena().getMaxPlayers()) {
-            player.sendMessage("Arena piena");
+            player.sendMessage(LOCALE.FULL.msg(instance));
             return;
         }
         game.playerJoin(player);
         playersInGame.put(player, arenaManager.getArena(arenaId));
-        player.sendMessage("Sei entrato nell'arena");
+        player.sendMessage(LOCALE.YOU_JOINED.msg(instance));
     }
 
     public void leaveArena(String arenaId, Player player) {

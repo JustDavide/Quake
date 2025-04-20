@@ -6,6 +6,7 @@ import me.dovide.quake.db.obj.PlayerStats;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.Items;
+import me.dovide.quake.utils.LOCALE;
 import me.dovide.quake.utils.ScoreboardTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,7 +53,10 @@ public class GameInstance {
         player.teleport(arena.getLobby());
 
         players.values().forEach(p ->
-                p.getPlayer().sendMessage(player.getName() + " è entrato nell'arena (" + players.values().size() + "/" + this.arena.getMaxPlayers()));
+                p.getPlayer().sendMessage(LOCALE.JOINED.msg(instance)
+                        .replace("%name%", player.getName())
+                        .replace("%current%", String.valueOf(players.values().size()))
+                        .replace("%max%", String.valueOf(arena.getMaxPlayers()))));
 
         checkStart();
     }
@@ -98,7 +102,8 @@ public class GameInstance {
                     return;
                 }
 
-                players.values().forEach(p -> p.getPlayer().sendMessage("Il Gioco inizierà tra " + timer + " secondi"));
+                players.values().forEach(p -> p.getPlayer().sendMessage(LOCALE.STARTING.msg(instance)
+                        .replace("%tempo%", String.valueOf(timer))));
                 timer--;
             }
         };
@@ -149,14 +154,15 @@ public class GameInstance {
 
                 if(stats != null) {
                     stats.setKills(stats.getKills() + score);
-                    db.updatePlayer(stats); // Da fixare duplicati
+                    db.updatePlayer(stats);
                 }else{
                     stats = new PlayerStats(player.getPlayer().getUniqueId(), player.getScore(), 0);
                     db.registerPlayer(stats);
                 }
 
                 scoreboardTask.getScoreManager().getActiveBoards().get(player).delete();
-                player.getPlayer().sendMessage("Game Over. " + winner.getName() + " won");
+                player.getPlayer().sendMessage(LOCALE.GAME_OVER.msg(instance)
+                        .replace("%player%", winner.getName()));
             }
 
             PlayerStats stats = db.getPlayerStats(winner.getUniqueId()); // Non ho bisogno del null check dato che ho controllato prima

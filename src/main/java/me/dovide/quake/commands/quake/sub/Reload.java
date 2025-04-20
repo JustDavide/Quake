@@ -3,6 +3,7 @@ package me.dovide.quake.commands.quake.sub;
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
 import me.dovide.quake.utils.Config;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.entity.Player;
 
 public class Reload extends SubCommand {
@@ -24,17 +25,17 @@ public class Reload extends SubCommand {
     public void execute(Player player, String[] args) {
 
         if(args.length != 1){
-            player.sendMessage("Args sbagliati");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return;
         }
 
         if(!player.hasPermission(config.getString("perms.quake.reload"))){
-            player.sendMessage("No Perms");
+            player.sendMessage(LOCALE.NO_PERMS.msg(instance));
             return;
         }
 
         instance.reloadConfig();
-        player.sendMessage("Config ricaricato.");
+        player.sendMessage(LOCALE.RELOADED.msg(instance));
 
     }
 }

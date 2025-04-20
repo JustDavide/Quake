@@ -2,7 +2,6 @@ package me.dovide.quake.commands.arena.sub;
 
 import me.dovide.quake.QuakeMain;
 import me.dovide.quake.commands.SubCommand;
-import me.dovide.quake.commands.arena.ArenaCommand;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;

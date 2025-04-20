@@ -6,6 +6,7 @@ import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.CreatorManager;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.entity.Player;
 
 public class Finish extends SubCommand {
@@ -13,11 +14,13 @@ public class Finish extends SubCommand {
     private final Config config;
     private final CreatorManager creatorManager;
     private final ArenaManager arenaManager;
+    private final QuakeMain instance;
 
     public Finish(QuakeMain instance){
         this.config = instance.getConfig();
         this.creatorManager = instance.getCreatorManager();
         this.arenaManager = instance.getArenaManager();
+        this.instance = instance;
     }
 
     @Override
@@ -29,28 +32,28 @@ public class Finish extends SubCommand {
     public void execute(Player player, String[] args) {
 
         if(args.length != 1){
-            player.sendMessage("Wrong args");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return;
         }
 
         if(!player.hasPermission(config.getString("perms.arena.setup"))){
-            player.sendMessage("No Perms");
+            player.sendMessage(LOCALE.NO_PERMS.msg(instance));
             return;
         }
 
         if(!creatorManager.getActiveCreators().containsKey(player)){
-            player.sendMessage("Not creating");
+            player.sendMessage(LOCALE.NOT_CREATING.msg(instance));
             return;
         }
 
         Arena arena = creatorManager.getActiveCreators().get(player);
 
         if(arena.isAnyNull()){
-            player.sendMessage("Didn't set everything. Check again");
+            player.sendMessage(LOCALE.NOT_FINISHED.msg(instance));
             return;
         }
 
         arenaManager.createArena(arena);
-        player.sendMessage("Arena created!");
+        player.sendMessage(LOCALE.FINISHED.msg(instance));
     }
 }

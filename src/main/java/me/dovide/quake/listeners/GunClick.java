@@ -1,13 +1,13 @@
 package me.dovide.quake.listeners;
 
 import me.dovide.quake.QuakeMain;
-import me.dovide.quake.db.Database;
 import me.dovide.quake.game.GameInstance;
 import me.dovide.quake.game.GameManager;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.utils.CDManager;
 import me.dovide.quake.utils.Config;
 import me.dovide.quake.utils.Items;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -27,15 +27,15 @@ public class GunClick implements Listener {
     private final Items items;
     private final Config config;
     private final CDManager cdManager;
-    private final Database database;
     private final GameManager gameManager;
+    private final QuakeMain instance;
 
     public GunClick(QuakeMain instance){
         this.config = instance.getConfig();
         this.items = new Items();
         this.cdManager = instance.getCdManager();
-        this.database = new Database(instance);
         this.gameManager = instance.getGameManager();
+        this.instance = instance;
     }
 
     @EventHandler
@@ -68,7 +68,7 @@ public class GunClick implements Listener {
 
                 String formatted = String.format("%.02f", remaining);
 
-                player.sendMessage("L'arma sta ricaricando.. Aspetta " + formatted + " secondi");
+                player.sendMessage(LOCALE.RECHARGING.msg(instance).replace("%tempo%", formatted));
                 return;
             }
         }
@@ -105,10 +105,12 @@ public class GunClick implements Listener {
                 if(entity instanceof Player && !entity.equals(player)){
                     // Respawn Mechanic
                     Arena arena = gameManager.getPlayersInGame().get(entity);
-                    entity.teleport(arena.getSpawns().get(new Random().nextInt(arena.getSpawns().size()))); // Potrebbe essere fatto meglio TODO
+                    entity.teleport(arena.getSpawns().get(new Random().nextInt(arena.getSpawns().size())));
 
-                    player.sendMessage("Hai colpito: " + entity.getName());
-                    entity.sendMessage("Sei stato colpito da: " + player.getName());
+                    player.sendMessage(LOCALE.HIT.msg(instance)
+                            .replace("%player%", entity.getName()));
+                    entity.sendMessage(LOCALE.GOT_HIT.msg(instance)
+                            .replace("%player%", player.getName()));
 
                     GameInstance gameInstance = gameManager.getGame(arena.getID());
 

@@ -6,6 +6,7 @@ import me.dovide.quake.commands.quake.sub.Get;
 import me.dovide.quake.commands.quake.sub.Join;
 import me.dovide.quake.commands.quake.sub.Leave;
 import me.dovide.quake.commands.quake.sub.Reload;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,8 +20,11 @@ import java.util.List;
 public class QuakeCommand implements TabExecutor {
 
     private final HashMap<String, SubCommand> subCommands = new HashMap<>();
+    private final QuakeMain instance;
 
     public QuakeCommand(QuakeMain instance){
+        this.instance = instance;
+
         registerSubCommand(new Get(instance));
         registerSubCommand(new Reload(instance));
         registerSubCommand(new Join(instance));
@@ -36,12 +40,12 @@ public class QuakeCommand implements TabExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
         if(!(commandSender instanceof Player player)){
-            commandSender.sendMessage("Can't use this here");
+            commandSender.sendMessage(LOCALE.NOT_PLAYER.msg(instance));
             return true;
         }
 
         if(args.length == 0){
-            player.sendMessage("Args wrong");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return true;
         }
 
@@ -51,7 +55,7 @@ public class QuakeCommand implements TabExecutor {
         if(sub != null)
             sub.execute(player, args);
         else
-            player.sendMessage("Sub doesn't exist");
+            player.sendMessage(LOCALE.ARG_NOT_FOUND.msg(instance));
 
         return true;
     }

@@ -6,6 +6,7 @@ import me.dovide.quake.game.GameManager;
 import me.dovide.quake.game.arena.Arena;
 import me.dovide.quake.game.arena.ArenaManager;
 import me.dovide.quake.utils.Config;
+import me.dovide.quake.utils.LOCALE;
 import org.bukkit.entity.Player;
 
 public class Delete extends SubCommand {
@@ -32,21 +33,20 @@ public class Delete extends SubCommand {
 
     @Override
     public void execute(Player player, String[] args) {
-
         if(args.length != 2){
-            player.sendMessage("Wrong Args");
+            player.sendMessage(LOCALE.WRONG_ARGS.msg(instance));
             return;
         }
 
         if(!player.hasPermission(config.getString("perms.arena.delete"))){
-            player.sendMessage("No perms");
+            player.sendMessage(LOCALE.NO_PERMS.msg(instance));
             return;
         }
 
         String arenaID = args[1];
 
         if(arenas.get(arenaID) == null){
-            player.sendMessage("Arena doesn't exist");
+            player.sendMessage(LOCALE.ARENA_NOT_FOUND.msg(instance));
             return;
         }
 
@@ -57,7 +57,6 @@ public class Delete extends SubCommand {
         arenas.set(arenaID, null);
         instance.saveArenas();
 
-        player.sendMessage("Arena removed.");
-
+        player.sendMessage(LOCALE.ARENA_DELETED.msg(instance));
     }
 }

@@ -18,7 +18,21 @@ public enum LOCALE {
     NO_PERMS("msg.errors.no_perms"),
     STOPPED_CREATING("msg.arena.stopped_creating"),
     ARG_NOT_FOUND("msg.errors.arg_not_found"),
-    ALREADY_CREATING("msg.errors.already_creating");
+    ALREADY_CREATING("msg.errors.already_creating"),
+    ARENA_NOT_FOUND("msg.errors.arena_not_found"),
+    NOT_A_NUMBER("msg.errors.not_a_number"),
+    ALREADY_PLAYING("msg.errors.already_playing"),
+    NOT_PLAYING("msg.errors.not_playing"),
+    LEFT("msg.arena.left"),
+    RELOADED("msg.arena.reloaded"),
+    JOINED("msg.arena.joined"),
+    YOU_JOINED("msg.arena.you_joined"),
+    STARTING("msg.arena.starting"),
+    GAME_OVER("msg.arena.game_over"),
+    RECHARGING("msg.errors.recharging"),
+    HIT("msg.arena.hit"),
+    GOT_HIT("msg.arena.got_hit"),
+    FULL("msg.errors.full");
 
 
     private final String path;
