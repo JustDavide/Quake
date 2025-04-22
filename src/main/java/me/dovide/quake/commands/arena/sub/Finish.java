@@ -55,5 +55,7 @@ public class Finish extends SubCommand {
 
         arenaManager.createArena(arena);
         player.sendMessage(LOCALE.FINISHED.msg(instance));
+        creatorManager.getActiveCreators().remove(player);
+
     }
 }
